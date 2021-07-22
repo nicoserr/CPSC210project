@@ -79,7 +79,7 @@ public class Subject {
     }
 
     // EFFECTS: prints the list of topics for the course, if the list is empty, then prints an empty list message.
-    public String getListOfTopicNames() {
+    public String getListOfCourseNames() {
         String list = "";
         for (Course c : courses) {
             if (list != "") {
@@ -89,9 +89,13 @@ public class Subject {
             }
         }
         if (list.equals("")) {
-            list = "This course has no topics!";
+            list = "This subject has no courses!";
         }
         return list;
+    }
+
+    public int getCoursesSize() {
+        return courses.size();
     }
 
     public ArrayList<Course> getCourses() {

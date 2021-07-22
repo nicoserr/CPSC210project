@@ -94,6 +94,11 @@ public class Course {
         return list;
     }
 
+    // EFFECT: return the size of topics
+    public int getTopicsSize() {
+        return topics.size();
+    }
+
     public ArrayList<Topic> getTopics() {
         return topics;
     }

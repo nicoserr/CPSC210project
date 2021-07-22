@@ -12,11 +12,12 @@ class CourseTest {
     Course testCourse;
     Subject parentSubject;
 
+
     @BeforeEach
     public void setup() {
         try {
-            testCourse = new Course("Course", parentSubject);
             parentSubject = new Subject("Parent Subject");
+            testCourse = new Course("Course", parentSubject);
         } catch (Exception e) {
             fail("Unexpected Exception");
         }
@@ -32,7 +33,8 @@ class CourseTest {
             fancyNameCourse = null;
         }
         assertEquals("Analytics and Information Engineering", fancyNameCourse.getCourseName());
-        assertEquals(0, testCourse.getTopics().size());
+        assertEquals(0, testCourse.getTopicsSize());
+        assertEquals(parentSubject, testCourse.getParentSubject());
 
         assertEquals("Course", testCourse.getCourseName());
     }
@@ -50,26 +52,22 @@ class CourseTest {
     @Test
     public void testAddTopicToEmptyTopics() {
         assertTrue(testCourse.addTopic("yellow"));
-        testCourse.addTopic("yellow");
-        assertEquals(1, testCourse.getTopics().size());
+        assertEquals(1, testCourse.getTopicsSize());
     }
 
     @Test
     public void testAddSameTopicManyTimes() {
         testCourse.addTopic("yellow");
-        assertEquals(1, testCourse.getTopics().size());
+        assertEquals(1, testCourse.getTopicsSize());
 
         assertFalse(testCourse.addTopic("yellow"));
-        testCourse.addTopic("yellow");
-        assertEquals(1, testCourse.getTopics().size());
+        assertEquals(1, testCourse.getTopicsSize());
 
         assertFalse(testCourse.addTopic("yellow"));
-        testCourse.addTopic("yellow");
-        assertEquals(1, testCourse.getTopics().size());
+        assertEquals(1, testCourse.getTopicsSize());
 
         assertFalse(testCourse.addTopic("yellow"));
-        testCourse.addTopic("yellow");
-        assertEquals(1, testCourse.getTopics().size());
+        assertEquals(1, testCourse.getTopicsSize());
 
     }
 
@@ -79,14 +77,13 @@ class CourseTest {
         testCourse.addTopic("blue");
         testCourse.addTopic("red");
         testCourse.addTopic("purple");
-        assertEquals(4, testCourse.getTopics().size());
+        assertEquals(4, testCourse.getTopicsSize());
     }
 
     @Test
     public void testAddBlankTopic() {
         assertFalse(testCourse.addTopic(""));
-        testCourse.addTopic("");
-        assertEquals(0, testCourse.getTopics().size());
+        assertEquals(0, testCourse.getTopicsSize());
     }
 
     @Test
@@ -96,8 +93,7 @@ class CourseTest {
         testCourse.addTopic("blue");
 
         assertFalse(testCourse.addTopic("red"));
-        testCourse.addTopic("red");
-        assertEquals(3,testCourse.getTopics().size());
+        assertEquals(3, testCourse.getTopicsSize());
     }
 
     @Test
@@ -108,11 +104,10 @@ class CourseTest {
     @Test
     public void testRemoveOnlyExistingTopic() {
         testCourse.addTopic("yellow");
-        assertEquals(1,testCourse.getTopics().size());
+        assertEquals(1, testCourse.getTopicsSize());
 
         assertTrue(testCourse.removeTopic("yellow"));
-        testCourse.removeTopic("yellow");
-        assertEquals(0,testCourse.getTopics().size());
+        assertEquals(0, testCourse.getTopicsSize());
     }
 
     @Test
@@ -120,11 +115,10 @@ class CourseTest {
         testCourse.addTopic("yellow");
         testCourse.addTopic("red");
         testCourse.addTopic("blue");
-        assertEquals(3, testCourse.getTopics().size());
+        assertEquals(3, testCourse.getTopicsSize());
 
         assertTrue(testCourse.removeTopic("red"));
-        testCourse.removeTopic("red");
-        assertEquals(2, testCourse.getTopics().size());
+        assertEquals(2, testCourse.getTopicsSize());
     }
 
     @Test
