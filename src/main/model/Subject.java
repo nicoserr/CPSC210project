@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.EmptyListException;
 import model.exceptions.EmptyNameException;
 
 import java.util.ArrayList;
@@ -8,8 +9,6 @@ public class Subject {
 
     private ArrayList<Course> courses;
     private String subjectName;
-
-    //TODO: specify all methods that must be later implemented
 
     // EFFECTS: creates a new subject with given name and without any courses,
     // if name length is zero throws EmptyNameException
@@ -26,7 +25,7 @@ public class Subject {
     //          under this Subject and returns true.
     //          if EmptyNameException is thrown when creating a new Course, it will catch it and return false.
     //          otherwise return false.
-    public boolean addCourse(String name) {
+    public boolean addCourse(String name) throws EmptyNameException {
         boolean notFound = true;
         for (Course c : courses) {
             if (c.getCourseName().equals(name)) {
@@ -36,12 +35,7 @@ public class Subject {
         }
         if (notFound) {
             Course newCourse;
-            try {
-                newCourse = new Course(name, this);
-            } catch (EmptyNameException e) {
-                System.out.println("Cannot leave name empty!");
-                return false;
-            }
+            newCourse = new Course(name, this);
             courses.add(newCourse);
             return true;
         } else {
@@ -64,34 +58,22 @@ public class Subject {
         return result;
     }
 
-    // EFFECTS: if a Course with given name is found in courses, it is retrieved
-    //          if no course is found, return null.
-    public Course retrieveCourse(String name) {
-        boolean isSearching = true;
+    // EFFECTS: if the list is empty, an EmptyListException is thrown, otherwise:
+    //          if a Course with given name is found in courses, it is retrieved
+    //          if no course is found, return null
+    public Course retrieveCourse(String name) throws EmptyListException {
         Course result = null;
-        for (Course c : courses) {
-            if (c.getCourseName().equals(name)) {
-                result = c;
-                break;
+        if (courses.size() == 0) {
+            throw new EmptyListException();
+        } else {
+            for (Course c : courses) {
+                if (c.getCourseName().equals(name)) {
+                    result = c;
+                    break;
+                }
             }
         }
         return result;
-    }
-
-    // EFFECTS: prints the list of topics for the course, if the list is empty, then prints an empty list message.
-    public String getListOfCourseNames() {
-        String list = "";
-        for (Course c : courses) {
-            if (list != "") {
-                list = list + ", '" + c.getCourseName() + "'";
-            } else {
-                list = list + "'" + c.getCourseName() + "'";
-            }
-        }
-        if (list.equals("")) {
-            list = "This subject has no courses!";
-        }
-        return list;
     }
 
     public int getCoursesSize() {

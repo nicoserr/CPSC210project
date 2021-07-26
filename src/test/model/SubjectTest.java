@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.EmptyListException;
 import model.exceptions.EmptyNameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,13 +26,13 @@ public class SubjectTest {
     public void testSubjectNoException() {
         Subject fancyNameSubject;
         try {
-            fancyNameSubject = new Subject("Computer Engineering and Biochemicals");
+            fancyNameSubject = new Subject("Computer Engineering And Biochemicals");
         } catch (Exception e) {
             fail("Unexpected Exception");
             fancyNameSubject = null;
             e.printStackTrace();
         }
-        assertEquals("Computer Engineering and Biochemicals", fancyNameSubject.getSubjectName());
+        assertEquals("Computer Engineering And Biochemicals", fancyNameSubject.getSubjectName());
         assertEquals(0, fancyNameSubject.getCoursesSize());
 
         assertEquals("Subject", testSubject.getSubjectName());
@@ -41,7 +42,7 @@ public class SubjectTest {
     @Test
     public void testSubjectEmptyNameException() {
         try {
-            Subject emptySubject = new Subject("");
+            new Subject("");
             fail("Expected EmptyNameException");
         } catch (EmptyNameException e) {
             e.printStackTrace();
@@ -50,22 +51,30 @@ public class SubjectTest {
 
     @Test
     public void testAddCourseToEmptyCourse() {
-        assertTrue(testSubject.addCourse("c1"));
+        try {
+            assertTrue(testSubject.addCourse("c1"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(1,testSubject.getCoursesSize());
     }
 
     @Test
     public void testAddSameCourseManyTimes() {
-        testSubject.addCourse("c1");
-        assertEquals(1, testSubject.getCoursesSize());
+        try {
+            testSubject.addCourse("c1");
+            assertEquals(1, testSubject.getCoursesSize());
 
-        assertFalse(testSubject.addCourse("c1"));
-        assertEquals(1, testSubject.getCoursesSize());
+            assertFalse(testSubject.addCourse("c1"));
+            assertEquals(1, testSubject.getCoursesSize());
 
-        assertFalse(testSubject.addCourse("c1"));
-        assertEquals(1, testSubject.getCoursesSize());
+            assertFalse(testSubject.addCourse("c1"));
+            assertEquals(1, testSubject.getCoursesSize());
 
-        assertFalse(testSubject.addCourse("c1"));
+            assertFalse(testSubject.addCourse("c1"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(1, testSubject.getCoursesSize());
     }
 
@@ -77,15 +86,23 @@ public class SubjectTest {
 
     @Test
     public void testAddBlankCourse() {
-        assertFalse(testSubject.addCourse(""));
+        try {
+            assertFalse(testSubject.addCourse(""));
+            fail("Expected EmptyNameException");
+        } catch (EmptyNameException e) {
+            e.printStackTrace();
+        }
         assertEquals(0, testSubject.getCoursesSize());
     }
 
     @Test
     public void testAddAlreadyExistingCourse() {
         addCourses123();
-
-        assertFalse(testSubject.addCourse("c2"));
+        try {
+            assertFalse(testSubject.addCourse("c2"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(3, testSubject.getCoursesSize());
     }
 
@@ -96,7 +113,7 @@ public class SubjectTest {
 
     @Test
     public void testRemoveOnlyExistingCourse() {
-        testSubject.addCourse("c1");
+        addCourseC1();
         assertEquals(1, testSubject.getCoursesSize());
 
         assertTrue(testSubject.removeCourse("c1"));
@@ -114,30 +131,84 @@ public class SubjectTest {
 
     @Test
     public void testRetrieveNonExistingTopic() {
-        assertNull(testSubject.retrieveCourse("c1"));
+        addCourses123();
+        try {
+            assertNull(testSubject.retrieveCourse("c4"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 
     @Test
     public void testRetrieveExistingCourse() {
-        testSubject.addCourse("c1");
-        assertNotNull(testSubject.retrieveCourse("c1"));
-        assertEquals("c1", testSubject.retrieveCourse("c1").getCourseName());
+        addCourseC1();
+        try {
+            assertNotNull(testSubject.retrieveCourse("c1"));
+            assertEquals("c1", testSubject.retrieveCourse("c1").getCourseName());
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 
     @Test
-    public void testGetEmptyListOfCourseNames() {
-        assertEquals("This subject has no courses!", testSubject.getListOfCourseNames());
+    public void testRetrieveFromEmptyList() {
+        try {
+            testSubject.retrieveCourse("c1");
+            fail("Expected EmptyListException");
+        } catch (EmptyListException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void testGetListOfCourseNames() {
+    public void testGetOneCourse() {
+        try {
+            testSubject.addCourse("c1");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+        ArrayList<Course> courses = testSubject.getCourses();
+        try {
+            Course c1 = testSubject.retrieveCourse("c1");
+            assertEquals(1, courses.size());
+            assertTrue(courses.contains(c1));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
+
+    @Test
+    public void testGetCourses(){
         addCourses123();
-        assertEquals("'c1', 'c2', 'c3'", testSubject.getListOfCourseNames());
+        ArrayList<Course> courses = testSubject.getCourses();
+        try {
+            Course c1 = testSubject.retrieveCourse("c1");
+            Course c2 = testSubject.retrieveCourse("c2");
+            Course c3 = testSubject.retrieveCourse("c3");
+            assertEquals(3, courses.size());
+            assertTrue(courses.contains(c1));
+            assertTrue(courses.contains(c2));
+            assertTrue(courses.contains(c3));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
+
+    private void addCourseC1() {
+        try {
+            testSubject.addCourse("c1");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 
     private void addCourses123() {
-        testSubject.addCourse("c1");
-        testSubject.addCourse("c2");
-        testSubject.addCourse("c3");
+        try {
+            testSubject.addCourse("c1");
+            testSubject.addCourse("c2");
+            testSubject.addCourse("c3");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 }

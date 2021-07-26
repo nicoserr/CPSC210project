@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+        new NotetakingApp();
 //        Subject s = new Subject("yessir");
 //        Course c = new Course("hello",s);
 //        c.addTopic("yellow");

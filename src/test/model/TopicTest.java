@@ -26,12 +26,12 @@ public class TopicTest {
     public void testTopicNoException() {
         Topic fancyNameTopic;
         try {
-            fancyNameTopic = new Topic("Overloading, Overriding and Overachieving", parentCourse);
+            fancyNameTopic = new Topic("Overloading Overriding and Overachieving", parentCourse);
         } catch (Exception e) {
             fail("Unexpected Exception");
             fancyNameTopic = null;
         }
-        assertEquals("Overloading, Overriding and Overachieving", fancyNameTopic.getTopicName());
+        assertEquals("Overloading Overriding and Overachieving", fancyNameTopic.getTopicName());
         assertEquals(parentCourse, fancyNameTopic.getParentCourse());
         assertEquals("", fancyNameTopic.getNoteTaken());
         assertTrue(fancyNameTopic.isEmpty());
@@ -42,7 +42,7 @@ public class TopicTest {
     @Test
     public void testTopicEmptyNameException() {
         try {
-            Topic emptyTopic = new Topic("", parentCourse);
+            new Topic("", parentCourse);
             fail("Expected EmptyNameException");
         } catch (EmptyNameException e) {
             e.printStackTrace();

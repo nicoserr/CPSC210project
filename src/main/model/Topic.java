@@ -2,8 +2,6 @@ package model;
 
 import model.exceptions.EmptyNameException;
 
-import java.util.ArrayList;
-
 public class Topic {
 
     private String topicName;
@@ -32,7 +30,7 @@ public class Topic {
         return parentCourse;
     }
 
-    // EFFECTS: returns true if notesTaken is empty, false otherwise
+    // EFFECTS: returns true if noteTaken is empty, false otherwise
     public boolean isEmpty() {
         return noteTaken.length() == 0;
     }

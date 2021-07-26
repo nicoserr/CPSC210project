@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.EmptyListException;
 import model.exceptions.EmptyNameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,12 +28,12 @@ class CourseTest {
     public void testCourseNoException() {
         Course fancyNameCourse;
         try {
-            fancyNameCourse = new Course("Analytics and Information Engineering", parentSubject);
+            fancyNameCourse = new Course("Analytics And Information Engineering", parentSubject);
         } catch (Exception e) {
             fail("Unexpected Exception");
             fancyNameCourse = null;
         }
-        assertEquals("Analytics and Information Engineering", fancyNameCourse.getCourseName());
+        assertEquals("Analytics And Information Engineering", fancyNameCourse.getCourseName());
         assertEquals(0, testCourse.getTopicsSize());
         assertEquals(parentSubject, testCourse.getParentSubject());
 
@@ -42,7 +43,7 @@ class CourseTest {
     @Test
     public void testCourseEmptyNameException() {
         try {
-            Course emptyCourse = new Course("", parentSubject);
+            new Course("", parentSubject);
             fail("Expected EmptyNameException");
         } catch (EmptyNameException name) {
             name.printStackTrace();
@@ -51,48 +52,63 @@ class CourseTest {
 
     @Test
     public void testAddTopicToEmptyTopics() {
-        assertTrue(testCourse.addTopic("yellow"));
+        try {
+            assertTrue(testCourse.addTopic("yellow"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(1, testCourse.getTopicsSize());
     }
 
     @Test
     public void testAddSameTopicManyTimes() {
-        testCourse.addTopic("yellow");
-        assertEquals(1, testCourse.getTopicsSize());
+        try {
+            testCourse.addTopic("yellow");
+            assertEquals(1, testCourse.getTopicsSize());
 
-        assertFalse(testCourse.addTopic("yellow"));
-        assertEquals(1, testCourse.getTopicsSize());
+            assertFalse(testCourse.addTopic("yellow"));
+            assertEquals(1, testCourse.getTopicsSize());
 
-        assertFalse(testCourse.addTopic("yellow"));
-        assertEquals(1, testCourse.getTopicsSize());
+            assertFalse(testCourse.addTopic("yellow"));
+            assertEquals(1, testCourse.getTopicsSize());
 
-        assertFalse(testCourse.addTopic("yellow"));
+            assertFalse(testCourse.addTopic("yellow"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(1, testCourse.getTopicsSize());
 
     }
 
     @Test
     public void testAddManyTopics() {
-        testCourse.addTopic("yellow");
-        testCourse.addTopic("blue");
-        testCourse.addTopic("red");
-        testCourse.addTopic("purple");
+        add3Topics();
+        try {
+            testCourse.addTopic("purple");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(4, testCourse.getTopicsSize());
     }
 
     @Test
-    public void testAddBlankTopic() {
-        assertFalse(testCourse.addTopic(""));
-        assertEquals(0, testCourse.getTopicsSize());
+    public void testAddBlankTopicEmptyNameException() {
+        try {
+            assertFalse(testCourse.addTopic(""));
+            fail("Expected EmptyNameException");
+        } catch (EmptyNameException e) {
+            assertEquals(0, testCourse.getTopicsSize());
+        }
     }
 
     @Test
     public void testAddAlreadyExistingTopic() {
-        testCourse.addTopic("yellow");
-        testCourse.addTopic("red");
-        testCourse.addTopic("blue");
-
-        assertFalse(testCourse.addTopic("red"));
+        add3Topics();
+        try {
+            assertFalse(testCourse.addTopic("red"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(3, testCourse.getTopicsSize());
     }
 
@@ -103,7 +119,11 @@ class CourseTest {
 
     @Test
     public void testRemoveOnlyExistingTopic() {
-        testCourse.addTopic("yellow");
+        try {
+            testCourse.addTopic("yellow");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
         assertEquals(1, testCourse.getTopicsSize());
 
         assertTrue(testCourse.removeTopic("yellow"));
@@ -112,9 +132,7 @@ class CourseTest {
 
     @Test
     public void testRemoveExistingTopic() {
-        testCourse.addTopic("yellow");
-        testCourse.addTopic("red");
-        testCourse.addTopic("blue");
+        add3Topics();
         assertEquals(3, testCourse.getTopicsSize());
 
         assertTrue(testCourse.removeTopic("red"));
@@ -123,27 +141,72 @@ class CourseTest {
 
     @Test
     public void testRetrieveNonExistingTopic() {
-        assertNull(testCourse.retrieveTopic("yellow"));
+        add3Topics();
+        try {
+            assertNull(testCourse.retrieveTopic("purple"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 
     @Test
-    public void testRetrieveExistingTopic() {
-        testCourse.addTopic("yellow");
-        assertNotNull(testCourse.retrieveTopic("yellow"));
-        assertEquals("yellow", testCourse.retrieveTopic("yellow").getTopicName());
+    public void testRetrieveExistingTopicNoException() {
+        try {
+            testCourse.addTopic("yellow");
+            assertNotNull(testCourse.retrieveTopic("yellow"));
+            assertEquals("yellow", testCourse.retrieveTopic("yellow").getTopicName());
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 
     @Test
-    public void testGetEmptyListOfTopicNames() {
-        assertEquals("This course has no topics!", testCourse.getListOfTopicNames());
+    public void testRetrieveFromEmptyList() {
+        try {
+            testCourse.retrieveTopic("c1");
+            fail("Expected EmptyListException");
+        } catch (EmptyListException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void testGetListOfTopicNames() {
-        testCourse.addTopic("yellow");
-        testCourse.addTopic("red");
-        testCourse.addTopic("blue");
+    public void testGetOneCourse() {
+        ArrayList<Topic> topics = testCourse.getTopics();
+        try {
+            testCourse.addTopic("yellow");
+            Topic yellow = testCourse.retrieveTopic("yellow");
+            assertEquals(1, topics.size());
+            assertTrue(topics.contains(yellow));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
 
-        assertEquals("'yellow', 'red', 'blue'", testCourse.getListOfTopicNames());
+    @Test
+    public void testGetTopics(){
+        add3Topics();
+        ArrayList<Topic> topics = testCourse.getTopics();
+        try {
+            Topic yellow = testCourse.retrieveTopic("yellow");
+            Topic blue = testCourse.retrieveTopic("blue");
+            Topic red = testCourse.retrieveTopic("red");
+            assertEquals(3, topics.size());
+            assertTrue(topics.contains(yellow));
+            assertTrue(topics.contains(red));
+            assertTrue(topics.contains(blue));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
+
+    private void add3Topics() {
+        try {
+            testCourse.addTopic("yellow");
+            testCourse.addTopic("red");
+            testCourse.addTopic("blue");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
     }
 }
