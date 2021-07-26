@@ -11,22 +11,21 @@ public class Course {
     private String courseName;
     private Subject parentSubject;
 
-    // EFFECTS: creates a new course with given name, empty list of topics and belonging to Subject s
-    //          if length of name is zero throws EmptyNameException
+    // EFFECTS: if length of name is zero throws EmptyNameException,
+    //          otherwise creates a new course with given name, empty list of topics and belonging to Subject s
     public Course(String name, Subject s) throws EmptyNameException {
         if (name.length() == 0) {
             throw new EmptyNameException();
         }
         courseName = name;
-        topics = new ArrayList<Topic>();
+        topics = new ArrayList<>();
         parentSubject = s;
     }
 
     // MODIFIES: this
     // EFFECTS: if there is no topic with the same name in topics, a new topic is created and added it to the topics
-    //          under this course and returns true.
-    //          if EmptyNameException is thrown when creating a new Topic, it will catch it and return false.
-    //          otherwise return false.
+    //          under this course and returns true
+    //          otherwise returns false
     public boolean addTopic(String name) throws EmptyNameException {
         boolean notFound = true;
         for (Topic t : topics) {
@@ -47,7 +46,7 @@ public class Course {
 
     // MODIFIES: this
     // EFFECTS: if a Topic with given name is found in topics, it is removed and true is returned,
-    // otherwise false is returned
+    //          otherwise false is returned
     public boolean removeTopic(String name) {
         boolean result = false;
         for (Topic t : topics) {

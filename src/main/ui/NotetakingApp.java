@@ -22,7 +22,7 @@ public class NotetakingApp {
     // EFFECTS: processes user input
     private void runNotetaking() {
         boolean keepGoing = true;
-        subjects = new ArrayList<Subject>();
+        subjects = new ArrayList<>();
         String command;
         input = new Scanner(System.in);
         input.useDelimiter("\n");
@@ -105,11 +105,6 @@ public class NotetakingApp {
             System.out.println("\nEnter Topic name to delete:");
             topicName = input.next();
             tryRemoveTopic(parentCourse, topicName);
-//        } else if (command.equals("g")) {
-//            System.out.println("\nEnter Topic name to go to:");
-//            topicName = input.next();
-//            Topic topic = parentCourse.retrieveTopic(topicName);
-//            goToTopic(topic);
         } else {
             System.out.println("\nInvalid command");
         }
@@ -180,8 +175,8 @@ public class NotetakingApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: if subject with given name exists in subjects, then remove it and signal success
-    //          if it doesn't, signal failure
+    // EFFECTS: if subject with given name exists in subjects, then remove it and signals success to the user
+    //          if it doesn't, signal failure to the user
     private void removeSubject(String name) {
         boolean found = false;
         for (Subject s : subjects) {
@@ -215,8 +210,8 @@ public class NotetakingApp {
     }
 
     // MODIFIES: this and parentSubject
-    // EFFECTS: tries to add a course under parentSubject with courseName, if possible, do so and signal success
-    //          if course name is already taken or name is invalid, signal failure
+    // EFFECTS: tries to add a course under parentSubject with courseName, if possible signals success to the user
+    //          if course name is already taken or name is invalid, signal failure to the user
     private void tryAddCourse(Subject parentSubject, String courseName) {
         try {
             if (parentSubject.addCourse(courseName)) {
@@ -230,8 +225,8 @@ public class NotetakingApp {
     }
 
     // MODIFIES: this and parentSubject
-    // EFFECTS: if course with courseName is found, remove it from courses and signal success
-    //          otherwise signal failure
+    // EFFECTS: if course with courseName is found, remove it from courses and signals success to the user
+    //          otherwise signal failure to the user
     private void tryRemoveCourse(Subject parentSubject, String courseName) {
         if (parentSubject.removeCourse(courseName)) {
             System.out.println("Course successfully deleted!");
@@ -241,8 +236,8 @@ public class NotetakingApp {
     }
 
     // MODIFIES: this and parentCourse
-    // EFFECTS: tries to add a topic with topicName to parentCourse, if possible, do so and signal success
-    //          if topic name is already taken or name is invalid signal failure
+    // EFFECTS: tries to add a topic with topicName to parentCourse, if possible, do so and signals success to the user
+    //          if topic name is already taken or name is invalid signal failure to the user
     private void tryAddTopic(Course parentCourse, String topicName) {
         try {
             if (parentCourse.addTopic(topicName)) {
@@ -256,8 +251,8 @@ public class NotetakingApp {
     }
 
     // MODIFIES: this and parentCourse
-    // EFFECTS: if topic with topicName is found, remove it from topics and signal success
-    //          otherwise signal failure
+    // EFFECTS: if topic with topicName is found, remove it from topics and signals success to the user
+    //          otherwise signal failure to the user
     private void tryRemoveTopic(Course parentCourse, String topicName) {
         if (parentCourse.removeTopic(topicName)) {
             System.out.println("Topic successfully deleted!");
@@ -311,13 +306,11 @@ public class NotetakingApp {
             System.out.println("\nCommands:");
             System.out.println("\tn -> add new Topic");
             System.out.println("\td -> delete Topic");
-            // System.out.println("\tg -> go to Topic");
-            // TODO: missing implementation for editing and adding notes to topic
             System.out.println("\tr -> return to Course list");
         }
     }
 
-    // EFFECTS: displays menu of Subjects to user, if subjects is empty throw EmptySubjectListException
+    // EFFECTS: displays menu of Subjects to user, if subjects is empty throw EmptyListException
     private void displaySubjects() throws EmptyListException {
         if (subjects.size() == 0) {
             throw new EmptyListException();
@@ -330,7 +323,7 @@ public class NotetakingApp {
     }
 
     // EFFECTS: displays menu of Courses belonging to Subject s to user,
-    // if courses is empty throw EmptySubjectListException
+    // if courses is empty throw EmptyListException
     private void displayCourses(Subject s) throws EmptyListException {
         ArrayList<Course> courses = s.getCourses();
         if (courses.size() == 0) {
@@ -344,7 +337,7 @@ public class NotetakingApp {
     }
 
     // EFFECTS: displays menu of Topics belonging to Course c to user,
-    // if topics is empty throw EmptySubjectListException
+    // if topics is empty throw EmptyListException
     private void displayTopics(Course c) throws EmptyListException {
         ArrayList<Topic> topics = c.getTopics();
         if (topics.size() == 0) {

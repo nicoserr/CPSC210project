@@ -33,9 +33,6 @@ public class TopicTest {
         }
         assertEquals("Overloading Overriding and Overachieving", fancyNameTopic.getTopicName());
         assertEquals(parentCourse, fancyNameTopic.getParentCourse());
-        assertEquals("", fancyNameTopic.getNoteTaken());
-        assertTrue(fancyNameTopic.isEmpty());
-
         assertEquals("Topic", testTopic.getTopicName());
     }
 
