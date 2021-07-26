@@ -4,7 +4,7 @@
 
 This is an application that will allow the user to organize their notes. There will be three categories:
 - **Subject** 
-    - Examples of subjects are: *ComputerScience*, *Physics*, *Philosophy*
+    - Examples of subjects are: *Computer Science*, *Physics*, *Philosophy*
 - **Course** 
     - For Computer Science, examples of courses are: *CPSC210*, *CPSC110*, *CPSC213*
 - **Topic** 
@@ -42,8 +42,8 @@ If the project turns out great, I might use it for my actual notetaking.
 
 ## User Stories
 - As a user, I want to be able to add a new Subject to my list of Subjects.
-- As a user, I want to be able to add a new Course to my list of Courses.
-- As a user, I want to be able to add a new Topic to my list of Topics.
+- As a user, I want to be able to add a new Course to a Subject's list of Courses.
+- As a user, I want to be able to add a new Topic to a Course's list of Topics.
 - As a user, I want to be able to remove a Subject, Course or Topic from their respective lists.
 - As a user, I want to be able to select a Subject and view a list of the Courses for that Subject.
 - As a user, I want to be able to select a Course and view a list of the Topics for that Course.
