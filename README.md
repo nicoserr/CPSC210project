@@ -47,4 +47,6 @@ If the project turns out great, I might use it for my actual notetaking.
 - As a user, I want to be able to remove a Subject, Course or Topic from their respective lists.
 - As a user, I want to be able to select a Subject and view a list of the Courses for that Subject.
 - As a user, I want to be able to select a Course and view a list of the Topics for that Course.
+- As a user, I want to be able to save my Courses, Subjects and Topics to file
+- As a user, I want to be able to load my Courses, Subjects and Topics from file
 
