@@ -1,0 +1,25 @@
+{"subjects": [
+    {
+        "courses": [
+            {
+                "topics": [
+                    {"name": "t1"},
+                    {"name": "t2"}
+                ],
+                "name": "c1"
+            },
+            {
+                "topics": [],
+                "name": "c2"
+            }
+        ],
+        "name": "s1"
+    },
+    {
+        "courses": [{
+            "topics": [],
+            "name": "c3"
+        }],
+        "name": "s2"
+    }
+]}

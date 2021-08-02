@@ -2,10 +2,14 @@ package model;
 
 import model.exceptions.EmptyListException;
 import model.exceptions.EmptyNameException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 
-public class Subject {
+// Represents a subject that has a name and a collection of courses
+public class Subject implements Writable {
 
     private ArrayList<Course> courses;
     private String subjectName;
@@ -75,6 +79,7 @@ public class Subject {
         return result;
     }
 
+    // EFFECTS: returns the size of courses
     public int getCoursesSize() {
         return courses.size();
     }
@@ -87,4 +92,22 @@ public class Subject {
         return subjectName;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", subjectName);
+        json.put("courses", coursesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns courses in this subject as a JSON array
+    private JSONArray coursesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Course c : courses) {
+            jsonArray.put(c.toJson());
+        }
+
+        return jsonArray;
+    }
 }

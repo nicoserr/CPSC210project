@@ -1,8 +1,11 @@
 package model;
 
 import model.exceptions.EmptyNameException;
+import org.json.JSONObject;
+import persistence.Writable;
 
-public class Topic {
+// Represents a topic that belongs to a course and has a name
+public class Topic implements Writable {
 
     private String topicName;
     private Course parentCourse;
@@ -22,5 +25,12 @@ public class Topic {
 
     public Course getParentCourse() {
         return parentCourse;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", topicName);
+        return json;
     }
 }

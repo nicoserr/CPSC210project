@@ -2,10 +2,14 @@ package model;
 
 import model.exceptions.EmptyListException;
 import model.exceptions.EmptyNameException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 
-public class Course {
+// Represents a course that belongs to a subject and has a name and a collection of topics
+public class Course implements Writable {
 
     private ArrayList<Topic> topics;
     private String courseName;
@@ -35,8 +39,7 @@ public class Course {
             }
         }
         if (notFound) {
-            Topic newTopic;
-            newTopic = new Topic(name, this);
+            Topic newTopic = new Topic(name, this);
             topics.add(newTopic);
             return true;
         } else {
@@ -94,4 +97,22 @@ public class Course {
         return parentSubject;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", courseName);
+        json.put("topics", topicsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns topics in this course as a JSON array
+    private JSONArray topicsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Topic t : topics) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
 }

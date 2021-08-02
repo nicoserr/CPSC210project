@@ -1,20 +1,37 @@
 package ui;
 
 import model.Course;
+import model.Note;
 import model.Subject;
 import model.Topic;
 import model.exceptions.EmptyNameException;
 import model.exceptions.EmptyListException;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Json functionality and methods are based/implemented from Json Serialization Demo.
+// (Includes JsonReader and JsonWriter)
+// Link: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
+// represents a notetaking application
 public class NotetakingApp {
-    private ArrayList<Subject> subjects;
+    private static final String JSON_STORE = "./data/notes.json";
     private Scanner input;
+    private Note note;
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
 
     // EFFECTS: runs the notetaking application
     public NotetakingApp() {
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
+        note = new Note();
+        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_STORE);
         runNotetaking();
     }
 
@@ -22,10 +39,7 @@ public class NotetakingApp {
     // EFFECTS: processes user input
     private void runNotetaking() {
         boolean keepGoing = true;
-        subjects = new ArrayList<>();
         String command;
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
 
         while (keepGoing) {
             displaySubjectMenu();
@@ -44,24 +58,26 @@ public class NotetakingApp {
     // MODIFIES: this
     // EFFECTS: processes user command for subject menu
     private void processSubjectCommand(String command) {
-        String subjectName;
         if (command.equals("n")) {
             System.out.println("\nEnter Subject name to add:");
-            subjectName = input.next();
-            addSubject(subjectName);
+            String subjectName = input.next();
+            tryAddSubject(subjectName);
         } else if (command.equals("d")) {
             System.out.println("\nEnter Subject name to delete:");
-            subjectName = input.next();
-            removeSubject(subjectName);
+            String subjectName = input.next();
+            tryRemoveSubject(subjectName);
         } else if (command.equals("g")) {
             System.out.println("\nEnter Subject name to go to:");
-            subjectName = input.next();
+            String subjectName = input.next();
             try {
-                Subject subject = retrieveSubject(subjectName);
-                goToSubject(subject);
+                goToSubject(note.retrieveSubject(subjectName));
             } catch (EmptyListException e) {
                 System.out.println("Subject list is empty");
             }
+        } else if (command.equals("s")) {
+            saveNotes();
+        } else if (command.equals("l")) {
+            loadNotes();
         } else {
             System.out.println("\nInvalid command");
         }
@@ -153,59 +169,28 @@ public class NotetakingApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a subject with given name to subjects
-    private void addSubject(String name) {
-        boolean notFound = true;
-        for (Subject s : subjects) {
-            if (s.getSubjectName().equals(name)) {
-                notFound = false;
-                break;
-            }
-        }
-        if (notFound) {
-            try {
-                subjects.add(new Subject(name));
+    // EFFECTS: tries to add a subject with given name, if possible signals success to the user
+    //          if course name is already taken or name is invalid, signal failure to the user
+    public void tryAddSubject(String name) {
+        try {
+            if (note.addSubject(name)) {
                 System.out.println("Subject successfully added");
-            } catch (EmptyNameException e) {
-                System.out.println("Subject cannot have blank name");
+            } else {
+                System.out.println("A subject with that name already exists");
             }
-        } else {
-            System.out.println("A subject with that name already exists");
+        } catch (EmptyNameException e) {
+            System.out.println("Subject cannot have blank name");
         }
     }
 
     // MODIFIES: this
     // EFFECTS: if subject with given name exists in subjects, then remove it and signals success to the user
     //          if it doesn't, signal failure to the user
-    private void removeSubject(String name) {
-        boolean found = false;
-        for (Subject s : subjects) {
-            if (s.getSubjectName().equals(name)) {
-                subjects.remove(s);
-                found = true;
-                break;
-            }
-        }
-        if (found) {
+    private void tryRemoveSubject(String name) {
+        if (note.removeSubject(name)) {
             System.out.println("Subject successfully deleted!");
         } else {
             System.out.println("No subject found with that name");
-        }
-    }
-
-    // EFFECTS: if subject with given name exists, it returns it, otherwise null is returned
-    private Subject retrieveSubject(String name) throws EmptyListException {
-        if (subjects.size() == 0) {
-            throw new EmptyListException();
-        } else {
-            Subject result = null;
-            for (Subject s : subjects) {
-                if (s.getSubjectName().equals(name)) {
-                    result = s;
-                    break;
-                }
-            }
-            return result;
         }
     }
 
@@ -273,6 +258,8 @@ public class NotetakingApp {
             System.out.println("\tn -> add new Subject");
             System.out.println("\td -> delete Subject");
             System.out.println("\tg -> go to Subject");
+            System.out.println("\ts -> save Notes to file");
+            System.out.println("\tl - load Notes from file");
             System.out.println("\tq -> quit");
         }
     }
@@ -312,6 +299,7 @@ public class NotetakingApp {
 
     // EFFECTS: displays menu of Subjects to user, if subjects is empty throw EmptyListException
     private void displaySubjects() throws EmptyListException {
+        ArrayList<Subject> subjects = note.getSubjects();
         if (subjects.size() == 0) {
             throw new EmptyListException();
         } else {
@@ -347,6 +335,30 @@ public class NotetakingApp {
             for (Topic t : topics) {
                 System.out.println("\t- " + t.getTopicName());
             }
+        }
+    }
+
+
+    // EFFECTS: saves note to file
+    private void saveNotes() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(note);
+            jsonWriter.close();
+            System.out.println("Saved notes to: " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads note from file
+    private void loadNotes() {
+        try {
+            note = jsonReader.read();
+            System.out.println("Loaded notes from: " + JSON_STORE);
+        } catch (Exception e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 }
