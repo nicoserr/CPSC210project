@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-// represents a writer that writes JSON representation of notes to file
+// represents a writer that writes JSON representation of note to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -25,7 +25,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes a JSON representation of the notes to file
+    // EFFECTS: writes a JSON representation of the note to file
     public void write(Note note) {
         JSONObject json = note.toJson();
         saveToFile(json.toString(TAB));

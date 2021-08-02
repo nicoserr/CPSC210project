@@ -13,8 +13,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// Json functionality and methods are based/implemented from Json Serialization Demo.
-// (Includes JsonReader and JsonWriter)
+// Json functionality and methods are based on and/or implemented from Json Serialization Demo.
+// (Includes JsonReader and JsonWriter and methods within Note, Subject, Course and Topic)
 // Link: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
 // represents a notetaking application

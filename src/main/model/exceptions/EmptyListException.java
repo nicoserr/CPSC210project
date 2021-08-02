@@ -1,4 +1,5 @@
 package model.exceptions;
 
-public class EmptyListException extends Exception{
+// represents an exception thrown when the list is empty
+public class EmptyListException extends Exception {
 }

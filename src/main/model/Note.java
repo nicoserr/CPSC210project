@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Note implements Writable {
     private ArrayList<Subject> subjects;
 
+    // EFFECTS: constructs a new note with an empty list of subjects
     public Note() {
         subjects = new ArrayList<>();
     }
@@ -19,7 +20,6 @@ public class Note implements Writable {
     // MODIFIES: this
     // EFFECTS: if there is no subject with the same name in subjects, a new subject is created and added to subjects
     //          and returns true, otherwise returns false
-
     public boolean addSubject(String name) throws EmptyNameException {
         boolean notFound = true;
         for (Subject s : subjects) {
