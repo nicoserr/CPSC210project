@@ -1,4 +1,30 @@
-{"subjects": [{
-    "courses": [],
-    "name": "s1"
-}]}
+{"subjects": [
+    {
+        "courses": [{
+            "topics": [],
+            "name": "1"
+        }],
+        "name": "1"
+    },
+    {
+        "courses": [
+            {
+                "topics": [{"name": "1"}],
+                "name": "2"
+            },
+            {
+                "topics": [
+                    {"name": "2"},
+                    {"name": "3"},
+                    {"name": "4"}
+                ],
+                "name": "3"
+            }
+        ],
+        "name": "2"
+    },
+    {
+        "courses": [],
+        "name": "3"
+    }
+]}

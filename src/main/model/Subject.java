@@ -13,6 +13,7 @@ public class Subject implements Writable {
 
     private ArrayList<Course> courses;
     private String subjectName;
+    private String subjectTreeName;
 
     // EFFECTS: if name length is zero throws EmptyNameException
     //          otherwise, creates a new subject with given name and without any courses
@@ -22,6 +23,7 @@ public class Subject implements Writable {
         }
         courses = new ArrayList<>();
         subjectName = name;
+        subjectTreeName = "Subject: " + name;
     }
 
     // MODIFIES: this
@@ -79,6 +81,24 @@ public class Subject implements Writable {
         return result;
     }
 
+    // EFFECTS: if the list is empty, an EmptyListException is thrown, otherwise:
+    //          if a Course with treeName matching given treeName is found in courses, it is retrieved
+    //          if no course is found, returns null
+    public Course retrieveTreeCourse(String treeName) throws EmptyListException {
+        Course result = null;
+        if (courses.size() == 0) {
+            throw new EmptyListException();
+        } else {
+            for (Course c : courses) {
+                if (c.getCourseTreeName().equals(treeName)) {
+                    result = c;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
     // EFFECTS: returns the size of courses
     public int getCoursesSize() {
         return courses.size();
@@ -90,6 +110,10 @@ public class Subject implements Writable {
 
     public String getSubjectName() {
         return subjectName;
+    }
+
+    public String getSubjectTreeName() {
+        return subjectTreeName;
     }
 
     @Override

@@ -69,6 +69,24 @@ public class Note implements Writable {
         }
     }
 
+    // EFFECTS: if the list is empty, an EmptyListException is thrown, otherwise:
+    //          if a Subject with treeName matching given treeName is found in subjects, it is retrieved
+    //          if no subject is found, null is returned
+    public Subject retrieveTreeSubject(String name) throws EmptyListException {
+        if (getSubjectsSize() == 0) {
+            throw new EmptyListException();
+        } else {
+            Subject result = null;
+            for (Subject s : subjects) {
+                if (s.getSubjectTreeName().equals(name)) {
+                    result = s;
+                    break;
+                }
+            }
+            return result;
+        }
+    }
+
     public ArrayList<Subject> getSubjects() {
         return subjects;
     }

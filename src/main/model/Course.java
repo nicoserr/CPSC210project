@@ -13,6 +13,7 @@ public class Course implements Writable {
 
     private ArrayList<Topic> topics;
     private String courseName;
+    private String courseTreeName;
     private Subject parentSubject;
 
     // EFFECTS: if length of name is zero throws EmptyNameException,
@@ -22,6 +23,7 @@ public class Course implements Writable {
             throw new EmptyNameException();
         }
         courseName = name;
+        courseTreeName = "Course: " + name;
         topics = new ArrayList<>();
         parentSubject = s;
     }
@@ -91,6 +93,10 @@ public class Course implements Writable {
 
     public String getCourseName() {
         return courseName;
+    }
+
+    public String getCourseTreeName() {
+        return courseTreeName;
     }
 
     public Subject getParentSubject() {

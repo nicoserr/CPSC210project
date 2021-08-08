@@ -25,13 +25,12 @@ public class NoteTest {
 
     @Test
     public void testNote() {
-        Course fancyNameCourse;
         assertEquals(0, testNote.getSubjectsSize());
     }
 
 
     @Test
-    public void testAddTopicToEmptyTopics() {
+    public void testAddSubjectToEmptySubjects() {
         try {
             assertTrue(testNote.addSubject("s1"));
         } catch (Exception e) {
@@ -41,7 +40,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testAddSameTopicManyTimes() {
+    public void testAddSameSubjectManyTimes() {
         try {
             testNote.addSubject("s1");
             assertEquals(1, testNote.getSubjectsSize());
@@ -61,7 +60,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testAddManyTopics() {
+    public void testAddManySubjects() {
         add3Subjects();
         try {
             assertTrue(testNote.addSubject("s4"));
@@ -72,7 +71,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testAddBlankTopicEmptyNameException() {
+    public void testAddBlankSubjectEmptyNameException() {
         try {
             assertFalse(testNote.addSubject(""));
             fail("Expected EmptyNameException");
@@ -82,7 +81,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testAddAlreadyExistingTopic() {
+    public void testAddAlreadyExistingSubject() {
         add3Subjects();
         try {
             assertFalse(testNote.addSubject("s2"));
@@ -93,12 +92,12 @@ public class NoteTest {
     }
 
     @Test
-    public void testRemoveNonExistingTopic() {
+    public void testRemoveNonExistingSubject() {
         assertFalse(testNote.removeSubject("s1"));
     }
 
     @Test
-    public void testRemoveOnlyExistingTopic() {
+    public void testRemoveOnlyExistingSubject() {
         try {
             testNote.addSubject("s1");
         } catch (Exception e) {
@@ -111,7 +110,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testRemoveExistingTopic() {
+    public void testRemoveExistingSubject() {
         add3Subjects();
         assertEquals(3, testNote.getSubjectsSize());
 
@@ -120,7 +119,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testRetrieveNonExistingTopic() {
+    public void testRetrieveNonExistingSubject() {
         add3Subjects();
         try {
             assertNull(testNote.retrieveSubject("s4"));
@@ -130,7 +129,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testRetrieveExistingTopicNoException() {
+    public void testRetrieveExistingSubjectNoException() {
         try {
             testNote.addSubject("s1");
             assertNotNull(testNote.retrieveSubject("s1"));
@@ -146,12 +145,12 @@ public class NoteTest {
             testNote.retrieveSubject("s1");
             fail("Expected EmptyListException");
         } catch (EmptyListException e) {
-            e.printStackTrace();
+            // do nothing
         }
     }
 
     @Test
-    public void testGetOneCourse() {
+    public void testGetOneSubject() {
         ArrayList<Subject> subjects = testNote.getSubjects();
         try {
             testNote.addSubject("s1");
@@ -164,7 +163,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testGetTopics(){
+    public void testGetSubjects(){
         add3Subjects();
         ArrayList<Subject> subjects = testNote.getSubjects();
         try {
@@ -175,6 +174,41 @@ public class NoteTest {
             assertTrue(subjects.contains(s1));
             assertTrue(subjects.contains(s2));
             assertTrue(subjects.contains(s3));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
+
+    @Test
+    public void testTreeRetrieveFromEmptyList() {
+        try {
+            testNote.retrieveTreeSubject("s1");
+            fail("Expected EmptyListException");
+        } catch (EmptyListException e) {
+            // do nothing
+        }
+    }
+
+    @Test
+    public void testTreeRetrieve() {
+        try {
+            testNote.addSubject("s1");
+            Subject s1 = testNote.retrieveTreeSubject("Subject: s1");
+            assertEquals("s1", s1.getSubjectName());
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
+
+    @Test
+    public void testTreeNullRetrieve() {
+        try {
+            testNote.addSubject("s1");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+        try {
+            assertNull(testNote.retrieveTreeSubject("Subject: s2"));
         } catch (Exception e) {
             fail("Unexpected Exception");
         }

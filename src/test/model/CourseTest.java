@@ -34,6 +34,7 @@ class CourseTest {
             fancyNameCourse = null;
         }
         assertEquals("Analytics And Information Engineering", fancyNameCourse.getCourseName());
+        assertEquals("Course: Analytics And Information Engineering", fancyNameCourse.getCourseTreeName());
         assertEquals(0, testCourse.getTopicsSize());
         assertEquals(parentSubject, testCourse.getParentSubject());
 
@@ -46,7 +47,7 @@ class CourseTest {
             new Course("", parentSubject);
             fail("Expected EmptyNameException");
         } catch (EmptyNameException name) {
-            name.printStackTrace();
+            // do nothing
         }
     }
 
@@ -166,7 +167,7 @@ class CourseTest {
             testCourse.retrieveTopic("c1");
             fail("Expected EmptyListException");
         } catch (EmptyListException e) {
-            e.printStackTrace();
+            // do nothing
         }
     }
 

@@ -18,7 +18,7 @@ public class SubjectTest {
             testSubject = new Subject("Subject");
         } catch (Exception e) {
             fail("Unexpected Exception");
-            e.printStackTrace();
+            // do nothing
         }
     }
 
@@ -30,9 +30,10 @@ public class SubjectTest {
         } catch (Exception e) {
             fail("Unexpected Exception");
             fancyNameSubject = null;
-            e.printStackTrace();
+
         }
         assertEquals("Computer Engineering And Biochemicals", fancyNameSubject.getSubjectName());
+        assertEquals("Subject: Computer Engineering And Biochemicals", fancyNameSubject.getSubjectTreeName());
         assertEquals(0, fancyNameSubject.getCoursesSize());
 
         assertEquals("Subject", testSubject.getSubjectName());
@@ -45,7 +46,7 @@ public class SubjectTest {
             new Subject("");
             fail("Expected EmptyNameException");
         } catch (EmptyNameException e) {
-            e.printStackTrace();
+            // do nothing
         }
     }
 
@@ -90,7 +91,7 @@ public class SubjectTest {
             assertFalse(testSubject.addCourse(""));
             fail("Expected EmptyNameException");
         } catch (EmptyNameException e) {
-            e.printStackTrace();
+            // do nothing
         }
         assertEquals(0, testSubject.getCoursesSize());
     }
@@ -130,7 +131,7 @@ public class SubjectTest {
     }
 
     @Test
-    public void testRetrieveNonExistingTopic() {
+    public void testRetrieveNonExistingCourse() {
         addCourses123();
         try {
             assertNull(testSubject.retrieveCourse("c4"));
@@ -156,7 +157,45 @@ public class SubjectTest {
             testSubject.retrieveCourse("c1");
             fail("Expected EmptyListException");
         } catch (EmptyListException e) {
-            e.printStackTrace();
+            // do nothing
+        }
+    }
+
+    @Test
+    public void testTreeRetrieveFromEmptyList() {
+        try {
+            testSubject.retrieveTreeCourse("c1");
+            fail("Expected EmptyListException");
+        } catch (EmptyListException e) {
+            // do nothing
+        }
+    }
+
+    @Test
+    public void testTreeRetrieve() {
+        try {
+            testSubject.addCourse("c1");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+        try {
+            assertEquals("c1", testSubject.retrieveTreeCourse("Course: c1").getCourseName());
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+    }
+
+    @Test
+    public void testTreeNullRetrieve() {
+        try {
+            testSubject.addCourse("c1");
+        } catch (Exception e) {
+            fail("Unexpected Exception");
+        }
+        try {
+            assertNull(testSubject.retrieveTreeCourse("Course: c2"));
+        } catch (Exception e) {
+            fail("Unexpected Exception");
         }
     }
 
