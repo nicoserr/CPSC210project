@@ -15,14 +15,15 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+// represents a notetaking application with a Graphic User Interface
 public class NotetakingAppGUI extends JPanel implements ActionListener {
     private static final String JSON_STORE = "./data/notes.json";
-    private static String ADD_COMMAND = "add";
-    private static String REMOVE_COMMAND = "remove";
-    private static String LOAD_COMMAND = "load";
-    private static String SAVE_COMMAND = "save";
-    private static int GUI_WIDTH = 300;
-    private static int GUI_HEIGHT = 150;
+    private static final String ADD_COMMAND = "add";
+    private static final String REMOVE_COMMAND = "remove";
+    private static final String LOAD_COMMAND = "load";
+    private static final String SAVE_COMMAND = "save";
+    private static final int GUI_WIDTH = 300;
+    private static final int GUI_HEIGHT = 150;
     private Toolkit toolkit = Toolkit.getDefaultToolkit();
     private Note note;
     private JsonReader jsonReader;
@@ -55,6 +56,11 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         treePanel.setPreferredSize(new Dimension(GUI_WIDTH, GUI_HEIGHT));
         add(treePanel, BorderLayout.CENTER);
 
+        initButtonPanel(addButton, removeButton, loadButton, saveButton);
+    }
+
+    // EFFECTS: initializes the button panel for NotetakingAppGUI
+    private void initButtonPanel(JButton addButton, JButton removeButton, JButton loadButton, JButton saveButton) {
         JPanel panel = new JPanel(new GridLayout(0,4));
         panel.add(addButton);
         panel.add(removeButton);
