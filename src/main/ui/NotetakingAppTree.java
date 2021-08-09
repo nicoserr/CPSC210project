@@ -24,7 +24,6 @@ public class NotetakingAppTree extends JPanel {
     protected DefaultTreeModel treeModel;
     protected JTree tree;
     protected Note note;
-    private Toolkit toolkit = Toolkit.getDefaultToolkit();
 
     // EFFECTS: constructs an empty and editable NotetakingAppTree
     public NotetakingAppTree() {
@@ -42,18 +41,17 @@ public class NotetakingAppTree extends JPanel {
 
     // MODIFIES: this
     // EFFECTS: tries to remove the current node, if no node is selected then emit a beep
-    public void removeCurrentNode() {
+    public boolean removeCurrentNode() {
         TreePath currentSelection = tree.getSelectionPath();
         if (currentSelection != null) {
             DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
             MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
             if (parent != null) {
                 treeModel.removeNodeFromParent(currentNode);
-                return;
+                return true;
             }
         }
-
-        toolkit.beep();
+        return false;
     }
 
     // MODIFIES: this

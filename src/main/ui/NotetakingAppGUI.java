@@ -4,6 +4,8 @@ import model.Course;
 import model.Note;
 import model.Subject;
 import model.Topic;
+import model.exceptions.EmptyListException;
+import model.exceptions.InvalidAdditionException;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -13,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 // represents a notetaking application with a Graphic User Interface
@@ -61,7 +64,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
 
     // EFFECTS: initializes the button panel for NotetakingAppGUI
     private void initButtonPanel(JButton addButton, JButton removeButton, JButton loadButton, JButton saveButton) {
-        JPanel panel = new JPanel(new GridLayout(0,4));
+        JPanel panel = new JPanel(new GridLayout(0, 4));
         panel.add(addButton);
         panel.add(removeButton);
         panel.add(loadButton);
@@ -98,54 +101,94 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
 
         if (ADD_COMMAND.equals(command)) {
             String name = JOptionPane.showInputDialog("");
-            try {
-                treePanel.addObject(name);
-            } catch (Exception exception) {
-                toolkit.beep();
-            }
+            tryAddObject(name);
         } else if (REMOVE_COMMAND.equals(command)) {
-            treePanel.removeCurrentNode();
+            tryRemove();
         } else if (LOAD_COMMAND.equals(command)) {
-            loadFromFile();
+            tryLoadFromFile();
         } else if (SAVE_COMMAND.equals(command)) {
-            saveToFile();
+            trySaveToFile();
         }
+    }
+
+    private void tryRemove() {
+        if (!treePanel.removeCurrentNode()) {
+            toolkit.beep();
+            showRemovalError();
+        }
+    }
+
+    private void trySaveToFile() {
+        try {
+            saveToFile();
+        } catch (FileNotFoundException exception) {
+            showSaveError();
+        }
+    }
+
+    private void tryLoadFromFile() {
+        try {
+            loadFromFile();
+        } catch (Exception exception) {
+            showLoadError();
+        }
+    }
+
+    private void tryAddObject(String name) {
+        try {
+            treePanel.addObject(name);
+        } catch (Exception exception) {
+            toolkit.beep();
+            showInvalidAdditionError();
+        }
+    }
+
+    private void showInvalidAdditionError() {
+        JOptionPane.showMessageDialog(this, "Invalid addition", "Add Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void showLoadError() {
+        JOptionPane.showMessageDialog(this, "Unable to read from file: " + JSON_STORE,
+                "Load Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void showSaveError() {
+        JOptionPane.showMessageDialog(this, "Unable to write to file: " + JSON_STORE,
+                "Save Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void showRemovalError() {
+        JOptionPane.showMessageDialog(this, "Invalid selection", "Remove Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 
     // MODIFIES: this
     // EFFECTS: loads a note from file and displays it in the GUI
-    private void loadFromFile() {
-        try {
-            note = jsonReader.read();
-            ArrayList<Subject> subjects = note.getSubjects();
-            treePanel.clear();
-            for (Subject s : subjects) {
-                DefaultMutableTreeNode treeSubject = treePanel.addObject(s.getSubjectName());
-                ArrayList<Course> courses = s.getCourses();
-                for (Course c : courses) {
-                    DefaultMutableTreeNode treeCourse = treePanel.addObject(treeSubject, c.getCourseName());
-                    ArrayList<Topic> topics = c.getTopics();
-                    for (Topic t : topics) {
-                        treePanel.addObject(treeCourse, t.getTopicName());
-                    }
+    private void loadFromFile() throws InvalidAdditionException, IOException, EmptyListException {
+        note = jsonReader.read();
+        ArrayList<Subject> subjects = note.getSubjects();
+        treePanel.clear();
+        for (Subject s : subjects) {
+            DefaultMutableTreeNode treeSubject = treePanel.addObject(s.getSubjectName());
+            ArrayList<Course> courses = s.getCourses();
+            for (Course c : courses) {
+                DefaultMutableTreeNode treeCourse = treePanel.addObject(treeSubject, c.getCourseName());
+                ArrayList<Topic> topics = c.getTopics();
+                for (Topic t : topics) {
+                    treePanel.addObject(treeCourse, t.getTopicName());
                 }
             }
-            System.out.println("Loaded notes from: " + JSON_STORE);
-        } catch (Exception exception) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
         }
+        System.out.println("Loaded notes from: " + JSON_STORE);
     }
 
     // MODIFIES: this
     // EFFECTS: saves the note to file
-    private void saveToFile() {
-        try {
-            jsonWriter.open();
-            jsonWriter.write(note);
-            jsonWriter.close();
-            System.out.println("Saved notes to: " + JSON_STORE);
-        } catch (FileNotFoundException exception) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
-        }
+    private void saveToFile() throws FileNotFoundException {
+        jsonWriter.open();
+        jsonWriter.write(note);
+        jsonWriter.close();
+        System.out.println("Saved notes to: " + JSON_STORE);
     }
 }
