@@ -7,8 +7,8 @@ import model.exceptions.EmptyListException;
 import model.exceptions.InvalidAdditionException;
 
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -94,10 +94,10 @@ public class NotetakingAppTree extends JPanel {
         if (parent == rootNode) {
             note.addSubject(childToString);
             childNode = new DefaultMutableTreeNode("Subject: " + child);
-        } else if (parent.getParent() == rootNode) {
+        } else if (parent.getLevel() == 1) {
             addCourseToSubject(parent, childToString);
             childNode = new DefaultMutableTreeNode("Course: " + child);
-        } else if (parent.getParent().getParent() == rootNode) {
+        } else if (parent.getLevel() == 2) {
             addTopicToCourse(parent, childToString);
             childNode = new DefaultMutableTreeNode("Topic: " + child);
         } else {
@@ -142,6 +142,33 @@ public class NotetakingAppTree extends JPanel {
 
     public Note getNote() {
         return note;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: if expand is true, expand all paths in this tree
+    //          if expand is false, collapse all paths in this tree
+    public void expandTree(boolean expand) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getModel().getRoot();
+        expandNode(node, expand);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: if expand is true, then expand the path for this node
+    //          if expand is false, collapse the path for this node
+    private void expandNode(DefaultMutableTreeNode node, boolean expand) {
+        ArrayList<DefaultMutableTreeNode> listOfNodes = Collections.list(node.children());
+        for (DefaultMutableTreeNode treeNode : listOfNodes) {
+            expandNode(treeNode, expand);
+        }
+        if (!expand && node.isRoot()) {
+            return;
+        }
+        TreePath path = new TreePath(node.getPath());
+        if (expand) {
+            tree.expandPath(path);
+        } else {
+            tree.collapsePath(path);
+        }
     }
 
 }

@@ -23,6 +23,9 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
     private static final String JSON_STORE = "./data/notes.json";
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
+    private static final String CLEAR_COMMAND = "clear";
+    private static final String EXPAND_COMMAND = "expand";
+    private static final String COLLAPSE_COMMAND = "collapse";
     private static final String LOAD_COMMAND = "load";
     private static final String SAVE_COMMAND = "save";
     private static final int GUI_WIDTH = 300;
@@ -40,35 +43,93 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
 
         initFields();
 
-        JButton addButton = new JButton("Add");
-        addButton.setActionCommand(ADD_COMMAND);
-        addButton.addActionListener(this);
+        JButton addButton = createAddButton();
 
-        JButton removeButton = new JButton("Remove");
-        removeButton.setActionCommand(REMOVE_COMMAND);
-        removeButton.addActionListener(this);
+        JButton removeButton = createRemoveButton();
 
-        JButton loadButton = new JButton("Load");
-        loadButton.setActionCommand(LOAD_COMMAND);
-        loadButton.addActionListener(this);
+        JButton clearButton = createClearButton();
 
-        JButton saveButton = new JButton("Save");
-        saveButton.setActionCommand(SAVE_COMMAND);
-        saveButton.addActionListener(this);
+        JButton expandButton = createExpandButton();
+
+        JButton collapseButton = createCollapseButton();
+
+        JButton loadButton = createLoadButton();
+
+        JButton saveButton = createSaveButton();
 
         treePanel.setPreferredSize(new Dimension(GUI_WIDTH, GUI_HEIGHT));
         add(treePanel, BorderLayout.CENTER);
 
-        initButtonPanel(addButton, removeButton, loadButton, saveButton);
+        initButtonPanel(addButton, removeButton, clearButton, collapseButton, expandButton, loadButton, saveButton);
+    }
+
+    // EFFECTS: creates a new JButton for the collapse command and returns it
+    private JButton createCollapseButton() {
+        JButton collapseButton = new JButton("Collapse All");
+        collapseButton.setActionCommand(COLLAPSE_COMMAND);
+        collapseButton.addActionListener(this);
+        return collapseButton;
+    }
+
+    // EFFECTS: creates a new JButton for the expand command and returns it
+    private JButton createExpandButton() {
+        JButton expandButton = new JButton("Expand All");
+        expandButton.setActionCommand(EXPAND_COMMAND);
+        expandButton.addActionListener(this);
+        return expandButton;
+    }
+
+    // EFFECTS: creates a new JButton for the save command and returns it
+    private JButton createSaveButton() {
+        JButton saveButton = new JButton("Save");
+        saveButton.setActionCommand(SAVE_COMMAND);
+        saveButton.addActionListener(this);
+        return saveButton;
+    }
+
+    // EFFECTS: creates a new JButton for the load command and returns it
+    private JButton createLoadButton() {
+        JButton loadButton = new JButton("Load");
+        loadButton.setActionCommand(LOAD_COMMAND);
+        loadButton.addActionListener(this);
+        return loadButton;
+    }
+
+    // EFFECTS: creates a new JButton for the clear command and returns it
+    private JButton createClearButton() {
+        JButton clearButton = new JButton("Clear");
+        clearButton.setActionCommand(CLEAR_COMMAND);
+        clearButton.addActionListener(this);
+        return clearButton;
+    }
+
+    // EFFECTS: creates a new JButton for the remove command and returns it
+    private JButton createRemoveButton() {
+        JButton removeButton = new JButton("Remove");
+        removeButton.setActionCommand(REMOVE_COMMAND);
+        removeButton.addActionListener(this);
+        return removeButton;
+    }
+
+    // EFFECTS: creates a new JButton for the add command and returns it
+    private JButton createAddButton() {
+        JButton addButton = new JButton("Add");
+        addButton.setActionCommand(ADD_COMMAND);
+        addButton.addActionListener(this);
+        return addButton;
     }
 
     // EFFECTS: initializes the button panel for NotetakingAppGUI
-    private void initButtonPanel(JButton addButton, JButton removeButton, JButton loadButton, JButton saveButton) {
-        JPanel panel = new JPanel(new GridLayout(0, 4));
+    private void initButtonPanel(JButton addButton, JButton removeButton, JButton clearButton, JButton collapseButton,
+                                 JButton expandButton, JButton loadButton, JButton saveButton) {
+        JPanel panel = new JPanel(new GridLayout(3, 3));
         panel.add(addButton);
         panel.add(removeButton);
+        panel.add(collapseButton);
+        panel.add(expandButton);
         panel.add(loadButton);
         panel.add(saveButton);
+        panel.add(clearButton);
         add(panel, BorderLayout.SOUTH);
     }
 
@@ -104,6 +165,12 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
             tryAddObject(name);
         } else if (REMOVE_COMMAND.equals(command)) {
             tryRemove();
+        } else if (CLEAR_COMMAND.equals(command)) {
+            treePanel.clear();
+        } else if (COLLAPSE_COMMAND.equals(command)) {
+            treePanel.expandTree(false);
+        } else if (EXPAND_COMMAND.equals(command)) {
+            treePanel.expandTree(true);
         } else if (LOAD_COMMAND.equals(command)) {
             tryLoadFromFile();
         } else if (SAVE_COMMAND.equals(command)) {

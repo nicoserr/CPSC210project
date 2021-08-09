@@ -49,4 +49,6 @@ If the project turns out great, I might use it for my actual notetaking.
 - As a user, I want to be able to select a Course and view a list of the Topics for that Course.
 - As a user, I want to be able to save my Courses, Subjects and Topics to file
 - As a user, I want to be able to load my Courses, Subjects and Topics from file
+- As a user, I want to be able to collapse all folders of Courses and Subjects 
+- As a user, I want to be able to expand all folders of Courses and Subjects
 
