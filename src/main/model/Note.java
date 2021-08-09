@@ -1,7 +1,7 @@
 package model;
 
 import model.exceptions.EmptyListException;
-import model.exceptions.EmptyNameException;
+import model.exceptions.InvalidAdditionException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -20,7 +20,7 @@ public class Note implements Writable {
     // MODIFIES: this
     // EFFECTS: if there is no subject with the same name in subjects, a new subject is created and added to subjects
     //          and returns true, otherwise returns false
-    public boolean addSubject(String name) throws EmptyNameException {
+    public boolean addSubject(String name) throws InvalidAdditionException {
         boolean notFound = true;
         for (Subject s : subjects) {
             if (s.getSubjectName().equals(name)) {

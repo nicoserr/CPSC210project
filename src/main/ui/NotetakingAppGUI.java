@@ -118,6 +118,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         try {
             note = jsonReader.read();
             ArrayList<Subject> subjects = note.getSubjects();
+            treePanel.clear();
             for (Subject s : subjects) {
                 DefaultMutableTreeNode treeSubject = treePanel.addObject(s.getSubjectName());
                 ArrayList<Course> courses = s.getCourses();

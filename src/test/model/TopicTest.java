@@ -1,6 +1,5 @@
 package model;
 
-import model.exceptions.EmptyNameException;
 import model.exceptions.InvalidAdditionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,16 +40,6 @@ public class TopicTest {
     public void testTopicEmptyNameException() {
         try {
             new Topic("", parentCourse);
-            fail("Expected EmptyNameException");
-        } catch (EmptyNameException e) {
-            // do nothing
-        }
-    }
-
-    @Test
-    public void testInvalidAdditionException() {
-        try {
-            testTopic.addInvalid();
             fail("Expected InvalidAdditionException");
         } catch (InvalidAdditionException e) {
             // do nothing

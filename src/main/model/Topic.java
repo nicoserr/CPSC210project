@@ -1,6 +1,5 @@
 package model;
 
-import model.exceptions.EmptyNameException;
 import model.exceptions.InvalidAdditionException;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -13,9 +12,9 @@ public class Topic implements Writable {
     private Course parentCourse;
 
     // EFFECTS: creates a new empty topic with given name that belongs to parentCourse c
-    public Topic(String name, Course c) throws EmptyNameException {
+    public Topic(String name, Course c) throws InvalidAdditionException {
         if (name.length() == 0) {
-            throw new EmptyNameException();
+            throw new InvalidAdditionException();
         }
         topicName = name;
         parentCourse = c;
@@ -27,11 +26,6 @@ public class Topic implements Writable {
 
     public Course getParentCourse() {
         return parentCourse;
-    }
-
-    // TODO: Make sure to check with TA
-    public void addInvalid() throws InvalidAdditionException {
-        throw new InvalidAdditionException();
     }
 
     @Override

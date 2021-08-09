@@ -4,7 +4,7 @@ import model.Course;
 import model.Note;
 import model.Subject;
 import model.exceptions.EmptyListException;
-import model.exceptions.EmptyNameException;
+import model.exceptions.InvalidAdditionException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,7 +25,7 @@ public class JsonReader {
 
     // EFFECTS: reads Note from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Note read() throws IOException, EmptyNameException, EmptyListException {
+    public Note read() throws IOException, InvalidAdditionException, EmptyListException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseNote(jsonObject);
@@ -43,7 +43,7 @@ public class JsonReader {
     }
 
     // EFFECTS: parses Note from JSON object and returns it
-    private Note parseNote(JSONObject jsonObject) throws EmptyNameException, EmptyListException {
+    private Note parseNote(JSONObject jsonObject) throws InvalidAdditionException, EmptyListException {
         Note note = new Note();
         addSubjects(note, jsonObject);
         return note;
@@ -51,7 +51,7 @@ public class JsonReader {
 
     // MODIFIES: note
     // EFFECTS: parses subjects from JSON object and adds them to note
-    private void addSubjects(Note note, JSONObject jsonObject) throws EmptyNameException, EmptyListException {
+    private void addSubjects(Note note, JSONObject jsonObject) throws InvalidAdditionException, EmptyListException {
         JSONArray jsonArray = jsonObject.getJSONArray("subjects");
         for (Object json : jsonArray) {
             JSONObject nextSubject = (JSONObject) json;
@@ -61,7 +61,7 @@ public class JsonReader {
 
     // MODIFIES: note
     // EFFECTS: parses subject from JSON object and adds it to note
-    private void addSubject(Note note, JSONObject jsonObject) throws EmptyListException, EmptyNameException {
+    private void addSubject(Note note, JSONObject jsonObject) throws EmptyListException, InvalidAdditionException {
         String name = jsonObject.getString("name");
         note.addSubject(name);
         Subject subject = note.retrieveSubject(name);
@@ -74,7 +74,7 @@ public class JsonReader {
 
     // MODIFIES: subject
     // EFFECTS: parses course from JSON object and adds it to subject
-    private void addCourse(Subject s, JSONObject jsonObject) throws EmptyNameException, EmptyListException {
+    private void addCourse(Subject s, JSONObject jsonObject) throws InvalidAdditionException, EmptyListException {
         String name = jsonObject.getString("name");
         s.addCourse(name);
         Course course = s.retrieveCourse(name);
@@ -87,7 +87,7 @@ public class JsonReader {
 
     // MODIFIES: course
     // EFFECTS: parses topic from JSON object and adds it to course
-    private void addTopic(Course c, JSONObject jsonObject) throws EmptyNameException {
+    private void addTopic(Course c, JSONObject jsonObject) throws InvalidAdditionException {
         String name = jsonObject.getString("name");
         c.addTopic(name);
     }

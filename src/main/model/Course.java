@@ -1,7 +1,7 @@
 package model;
 
 import model.exceptions.EmptyListException;
-import model.exceptions.EmptyNameException;
+import model.exceptions.InvalidAdditionException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -16,11 +16,11 @@ public class Course implements Writable {
     private String courseTreeName;
     private Subject parentSubject;
 
-    // EFFECTS: if length of name is zero throws EmptyNameException,
+    // EFFECTS: if length of name is zero throws InvalidAdditionException,
     //          otherwise creates a new course with given name, empty list of topics and belonging to Subject s
-    public Course(String name, Subject s) throws EmptyNameException {
+    public Course(String name, Subject s) throws InvalidAdditionException {
         if (name.length() == 0) {
-            throw new EmptyNameException();
+            throw new InvalidAdditionException();
         }
         courseName = name;
         courseTreeName = "Course: " + name;
@@ -32,7 +32,7 @@ public class Course implements Writable {
     // EFFECTS: if there is no topic with the same name in topics, a new topic is created and added it to the topics
     //          under this course and returns true
     //          otherwise returns false
-    public boolean addTopic(String name) throws EmptyNameException {
+    public boolean addTopic(String name) throws InvalidAdditionException {
         boolean notFound = true;
         for (Topic t : topics) {
             if (t.getTopicName().equals(name)) {

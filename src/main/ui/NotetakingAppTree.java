@@ -4,7 +4,6 @@ import model.Course;
 import model.Note;
 import model.Subject;
 import model.exceptions.EmptyListException;
-import model.exceptions.EmptyNameException;
 import model.exceptions.InvalidAdditionException;
 
 import java.awt.GridLayout;
@@ -60,8 +59,7 @@ public class NotetakingAppTree extends JPanel {
 
     // MODIFIES: this
     // EFFECTS: adds Object child to the tree under appropriate parent
-    public DefaultMutableTreeNode addObject(Object child) throws EmptyNameException, EmptyListException,
-            InvalidAdditionException {
+    public DefaultMutableTreeNode addObject(Object child) throws InvalidAdditionException, EmptyListException {
         DefaultMutableTreeNode parentNode;
         TreePath parentPath = tree.getSelectionPath();
 
@@ -76,8 +74,8 @@ public class NotetakingAppTree extends JPanel {
 
     // MODIFIES: this
     // EFFECTS: adds Object child to the tree under parent
-    public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child) throws EmptyNameException,
-            EmptyListException, InvalidAdditionException {
+    public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child) throws
+            InvalidAdditionException, EmptyListException {
         return addObject(parent, child, false);
     }
 
@@ -88,7 +86,7 @@ public class NotetakingAppTree extends JPanel {
     //          if it is added underneath a Course, adds it to the course as a Topic
     //          if it is added underneath a Topic, throw InvalidAdditionException
     public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child, boolean shouldBeVisible)
-            throws EmptyNameException, EmptyListException, InvalidAdditionException {
+            throws InvalidAdditionException, EmptyListException {
         String childToString = (String) child;
         DefaultMutableTreeNode childNode;
 
@@ -116,9 +114,16 @@ public class NotetakingAppTree extends JPanel {
         return childNode;
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes all children except root node
+    public void clear() {
+        rootNode.removeAllChildren();
+        treeModel.reload();
+    }
+
     // EFFECTS: adds the course to its corresponding subject
     private void addCourseToSubject(DefaultMutableTreeNode parent, String childToString) throws EmptyListException,
-            EmptyNameException {
+            InvalidAdditionException {
         String subjectName = (String) parent.getUserObject();
         Subject parentSubject = note.retrieveTreeSubject(subjectName);
         parentSubject.addCourse(childToString);
@@ -126,7 +131,7 @@ public class NotetakingAppTree extends JPanel {
 
     // EFFECTS: find the corresponding course to add the topic to and adds it
     private void addTopicToCourse(DefaultMutableTreeNode parent, String childToString) throws EmptyListException,
-            EmptyNameException {
+            InvalidAdditionException {
         ArrayList<Subject> subjects = note.getSubjects();
         String courseName = (String) parent.getUserObject();
         for (Subject s : subjects) {

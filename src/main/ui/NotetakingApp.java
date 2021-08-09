@@ -4,7 +4,7 @@ import model.Course;
 import model.Note;
 import model.Subject;
 import model.Topic;
-import model.exceptions.EmptyNameException;
+import model.exceptions.InvalidAdditionException;
 import model.exceptions.EmptyListException;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -178,7 +178,7 @@ public class NotetakingApp {
             } else {
                 System.out.println("A subject with that name already exists");
             }
-        } catch (EmptyNameException e) {
+        } catch (InvalidAdditionException e) {
             System.out.println("Subject cannot have blank name");
         }
     }
@@ -204,7 +204,7 @@ public class NotetakingApp {
             } else {
                 System.out.println("A course with that name already exists");
             }
-        } catch (EmptyNameException e) {
+        } catch (InvalidAdditionException e) {
             System.out.println("Cannot leave name empty!");
         }
     }
@@ -230,7 +230,7 @@ public class NotetakingApp {
             } else {
                 System.out.println("A topic with that name already exists");
             }
-        } catch (EmptyNameException e) {
+        } catch (InvalidAdditionException e) {
             System.out.println("Cannot leave name empty!");
         }
     }
