@@ -18,6 +18,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// Some code from NotetakingAppGUI and NotetakingAppTree was based on / implemented from:
+// https://docs.oracle.com/javase/tutorial/uiswing/examples/zipfiles/components-DynamicTreeDemoProject.zip
+// The methods for the collapsing and expanding of the tree in NotetakingAppTree
+// are implemented from (although slightly edited):
+// https://www.logicbig.com/tutorials/java-swing/jtree-expand-collapse-all-nodes.html
+
 // represents a notetaking application with a Graphic User Interface
 public class NotetakingAppGUI extends JPanel implements ActionListener {
     private static final String JSON_STORE = "./data/notes.json";
