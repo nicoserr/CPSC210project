@@ -37,7 +37,7 @@ public class TopicTest {
     }
 
     @Test
-    public void testTopicEmptyNameException() {
+    public void testTopicInvalidAdditionException() {
         try {
             new Topic("", parentCourse);
             fail("Expected InvalidAdditionException");

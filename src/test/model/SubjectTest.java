@@ -41,7 +41,7 @@ public class SubjectTest {
     }
 
     @Test
-    public void testSubjectEmptyNameException() {
+    public void testSubjectInvalidAdditionException() {
         try {
             new Subject("");
             fail("Expected InvalidAdditionException");

@@ -42,7 +42,7 @@ class CourseTest {
     }
 
     @Test
-    public void testCourseEmptyNameException() {
+    public void testCourseInvalidAdditionException() {
         try {
             new Course("", parentSubject);
             fail("Expected InvalidAdditionException");
@@ -93,7 +93,7 @@ class CourseTest {
     }
 
     @Test
-    public void testAddBlankTopicEmptyNameException() {
+    public void testAddBlankTopicInvalidAdditionException() {
         try {
             assertFalse(testCourse.addTopic(""));
             fail("Expected InvalidAdditionException");

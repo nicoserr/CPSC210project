@@ -71,7 +71,7 @@ public class NoteTest {
     }
 
     @Test
-    public void testAddBlankSubjectEmptyNameException() {
+    public void testAddBlankSubjectInvalidAdditionException() {
         try {
             assertFalse(testNote.addSubject(""));
             fail("Expected InvalidAdditionException");
