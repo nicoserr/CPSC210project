@@ -73,7 +73,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
     // EFFECTS: initializes the fields for NotetakingAppGUI
     private void initFields() {
         treePanel = new NotetakingAppTree();
-        this.note = treePanel.note;
+        this.note = treePanel.getNote();
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
     }

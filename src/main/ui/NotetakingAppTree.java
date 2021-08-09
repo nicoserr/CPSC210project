@@ -34,7 +34,6 @@ public class NotetakingAppTree extends JPanel {
         treeModel = new DefaultTreeModel(rootNode);
         tree = new JTree(treeModel);
         note = new Note();
-        tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setShowsRootHandles(true);
         JScrollPane scrollPane = new JScrollPane(tree);
@@ -141,6 +140,10 @@ public class NotetakingAppTree extends JPanel {
                 break;
             }
         }
+    }
+
+    public Note getNote() {
+        return note;
     }
 
 }
