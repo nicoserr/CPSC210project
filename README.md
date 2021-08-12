@@ -67,3 +67,35 @@ a Subject, Course or Topic with an empty name. This exception was thrown from th
 and propagated up until the tryAddCourse method for the console UI and to the tryAddObject method in the GUI. The 
 second use was when the user tried to add an object to a Topic. This use was from within the addObject method in 
 NotetakingAppTree and only applied to the GUI.
+
+## Phase 4: Task 3
+If I had more time to work on the project, the first thing I would do is to implement the relationship between Subject 
+and Course (Subject.courses and Course.parentSubject) and between Course and Topic (Course.topics and 
+Topic.parentCourse) as a bi-directional relationship. I would do this in the way we saw how to do in Construction 8. I
+believe that this would make the code simpler and easier. I noticed this while completing the project but because it 
+meant a lot of work refactoring the classes that I had already made during phase 1, I decided against it as I wouldn't
+have had enough time.
+
+Additionally, I would like to remove the one of the two associations with Note, either the one for NotetakingAppGUI or 
+the one for NotetakingAppTree. I see this as a simple thing to do and would have done it for the project, but I didn't 
+realize it until I made my UML class diagram. This would reduce coupling.
+
+I also might have created an interface to represent classes that can have things added to it (Note, Subject, Course) and
+implemented it in the classes mentioned above. This would make some code in NotetakingAppTree.addObject a bit simpler 
+since I would now be able to check if the parent implements this interface in order to know whether a child can be 
+added or not. I thought about using the composite pattern for this, but because Note, Subject and Course would all need
+to be the composite I wouldn't know how to go about doing this.
+
+Something else I would do is apply the Observer pattern to observe when an Object is added to the tree in 
+NotetakingAppTree and then notify the Note, Subject and Course so that they reflect this change. I believe this would 
+make the code cleaner and easier to understand.
+
+Finally, and this is just an idea that I don't know if it will work, I would like to try making Subject, Course and Note
+all the same class. I don't think this would work for a console interface since it uses the different classes to print
+different menus and process different commands, but for a GUI using a tree, I think it would be possible. 
+This is because the commands are the same regardless of where in the tree you are and the tree doesn't care about what
+class is added. If this works, it would remove a lot of code and fix the problem I mentioned above regarding the 
+implementation of the Composite pattern.
+
+Overall, because I began coding before knowing what I know now about design, there are many issues and although I 
+believe my code is decent, is not optimal and, having more time, I would fix these issues and any others that arose.
