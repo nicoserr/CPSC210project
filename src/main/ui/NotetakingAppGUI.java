@@ -184,6 +184,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         }
     }
 
+    // EFFECTS: tries to remove the current node, if not possible shows an error and emits a beep
     private void tryRemove() {
         if (!treePanel.removeCurrentNode()) {
             toolkit.beep();
@@ -191,6 +192,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         }
     }
 
+    // EFFECTS: tries to save to file, if not possible shows an error and emits a beep
     private void trySaveToFile() {
         try {
             saveToFile();
@@ -199,6 +201,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         }
     }
 
+    // EFFECTS: tries to load from file, if not possible shows an error and emits a beep
     private void tryLoadFromFile() {
         try {
             loadFromFile();
@@ -207,6 +210,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         }
     }
 
+    // EFFECTS: tries to add an object to the tree, if not possible shows an error and emits a beep
     private void tryAddObject(String name) {
         try {
             treePanel.addObject(name);
@@ -216,21 +220,25 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         }
     }
 
+    // EFFECTS: shows a message dialog box with an addition error
     private void showInvalidAdditionError() {
         JOptionPane.showMessageDialog(this, "Invalid addition", "Add Error",
                 JOptionPane.ERROR_MESSAGE);
     }
 
+    // EFFECTS: shows a message dialog box with a loading error
     private void showLoadError() {
         JOptionPane.showMessageDialog(this, "Unable to read from file: " + JSON_STORE,
                 "Load Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    // EFFECTS: shows a message dialog box with a saving error
     private void showSaveError() {
         JOptionPane.showMessageDialog(this, "Unable to write to file: " + JSON_STORE,
                 "Save Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    // EFFECTS: shows a message dialog box with a removal error
     private void showRemovalError() {
         JOptionPane.showMessageDialog(this, "Invalid selection", "Remove Error",
                 JOptionPane.ERROR_MESSAGE);
@@ -256,7 +264,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
         System.out.println("Loaded notes from: " + JSON_STORE);
     }
 
-    // MODIFIES: this
+
     // EFFECTS: saves the note to file
     private void saveToFile() throws FileNotFoundException {
         jsonWriter.open();
