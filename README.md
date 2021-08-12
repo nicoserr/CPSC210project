@@ -52,3 +52,18 @@ If the project turns out great, I might use it for my actual notetaking.
 - As a user, I want to be able to collapse all folders of Courses and Subjects 
 - As a user, I want to be able to expand all folders of Courses and Subjects
 
+## Phase 4: Task 2
+I believe all my classes and methods have robust design. There are no requires clauses anywhere in my code. More
+specifically, Subject, Course, Topic and NotetakingAppTree are the classes that contain methods that throw exceptions.
+These are all caught in the NotetakingAppGUI class.
+
+There are two exceptions: EmptyListException and InvalidAdditionException. The EmptyListException is used in the
+retrieveSubject, retrieveCourse and retrieveTopic methods (for the GUI) when the list of subjects, courses or topics
+from which the element will be retrieved is empty. This exception had more use in the console UI since it was thrown and
+caught in the printing of the menu, since when the subjects, courses or topics were empty, the user was notified.
+
+The second exception (InvalidAdditionException) has two uses. The first one was when there was an attempt to create
+a Subject, Course or Topic with an empty name. This exception was thrown from the constructor of each respective class
+and propagated up until the tryAddCourse method for the console UI and to the tryAddObject method in the GUI. The 
+second use was when the user tried to add an object to a Topic. This use was from within the addObject method in 
+NotetakingAppTree and only applied to the GUI.

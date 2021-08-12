@@ -1,30 +1,22 @@
 {"subjects": [
     {
         "courses": [{
-            "topics": [],
-            "name": "1"
+            "topics": [{"name": "Derivation"}],
+            "name": "Math 101"
         }],
-        "name": "1"
+        "name": "Math"
     },
     {
         "courses": [
             {
-                "topics": [{"name": "1"}],
-                "name": "2"
+                "topics": [{"name": "Design Patterns"}],
+                "name": "CPSC 210"
             },
             {
-                "topics": [
-                    {"name": "2"},
-                    {"name": "3"},
-                    {"name": "4"}
-                ],
-                "name": "3"
+                "topics": [],
+                "name": "CPSC 110"
             }
         ],
-        "name": "2"
-    },
-    {
-        "courses": [],
-        "name": "3"
+        "name": "Computer Science"
     }
 ]}
