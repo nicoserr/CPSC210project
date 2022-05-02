@@ -34,8 +34,8 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
     private static final String COLLAPSE_COMMAND = "collapse";
     private static final String LOAD_COMMAND = "load";
     private static final String SAVE_COMMAND = "save";
-    private static final int GUI_WIDTH = 300;
-    private static final int GUI_HEIGHT = 150;
+    private static final int GUI_WIDTH = 500;
+    private static final int GUI_HEIGHT = 250;
     private Toolkit toolkit = Toolkit.getDefaultToolkit();
     private Note note;
     private JsonReader jsonReader;
@@ -247,8 +247,8 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
     // MODIFIES: this
     // EFFECTS: loads a note from file and displays it in the GUI
     private void loadFromFile() throws InvalidAdditionException, IOException, EmptyListException {
-        note = jsonReader.read();
-        ArrayList<Subject> subjects = note.getSubjects();
+        this.note = jsonReader.read();
+        ArrayList<Subject> subjects = this.note.getSubjects();
         treePanel.clear();
         for (Subject s : subjects) {
             DefaultMutableTreeNode treeSubject = treePanel.addObject(s.getSubjectName());
@@ -268,7 +268,7 @@ public class NotetakingAppGUI extends JPanel implements ActionListener {
     // EFFECTS: saves the note to file
     private void saveToFile() throws FileNotFoundException {
         jsonWriter.open();
-        jsonWriter.write(note);
+        jsonWriter.write(this.note);
         jsonWriter.close();
         System.out.println("Saved notes to: " + JSON_STORE);
     }
